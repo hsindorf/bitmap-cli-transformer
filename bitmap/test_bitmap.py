@@ -17,7 +17,7 @@ def test_read_file_file_not_found():
 def test_read_file():
     """Tests some things."""
     pass
-
+    return
 
 
 def test_write_file_type_error():
