@@ -1,4 +1,6 @@
 import struct
+import random
+import binascii
 
 
 class Bitmap(object):
@@ -75,16 +77,38 @@ class Bitmap(object):
     # TODO: Write your instance methods for transformations here as part of the
     #  Bitmap class.
 
+    def make_red(self):
+        """Instance method that makes the bitmap photo turn red"""
+        for i in range(len(self.color_table)):
+            # print(self.color_table[i])
+            # color = binascii.hexlify(self.pixel_array[i].to_bytes(4, byteorder='big'))
+            if self.color_table[i] == 0 and i != len(self.color_table) - 1:
+                color = self.color_table[i + 3] + 100
+                if color > 255:
+                    color = 255
+
+                self.color_table[i + 3] = color
+
+
+
+
+    def lighten(self):
+        """Instance method that lights the bitmap photo"""
+        for i in range(65535):
+            color = self.pixel_array[i] + 100
+
+            if color > 255:
+                color = 255
+
+            self.pixel_array[i] = color
+
 
 if __name__ == "__main__":
     my_bitmap = Bitmap.read_file('bmp.bmp')
 
-    for i in range(65535):
-        shade = my_bitmap.pixel_array[i] + 100
+    # print(my_bitmap.get_headers())
 
-        if shade > 255:
-            shade = 255
-
-        my_bitmap.pixel_array[i] = shade
+    # my_bitmap.lighten()
+    my_bitmap.make_red()
 
     my_bitmap.write_file('test2.bmp')
