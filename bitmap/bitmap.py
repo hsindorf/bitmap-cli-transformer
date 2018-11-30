@@ -19,7 +19,7 @@ class Bitmap(object):
         """Class Method which consumes a file path as input, and returns a
         Bitmap instance.
         """
-        # TODO: Complete this method for consuming a file from the file system
+        # TOTEST: Complete this method for consuming a file from the file system
         # and creating a BMP instance (cls).
         with open(origin, 'rb') as binary_data:
             try:
@@ -35,8 +35,11 @@ class Bitmap(object):
         """Instance Method which accepts a target file path and writes the
         instance source data to target path.
         """
-        # TODO: Complete this method for writing a file from to the file
+        # TOTEST: Complete this method for writing a file from to the file
         # system from the BMP instance (self).
+
+        if target == '':
+            raise ValueError('Target filename cannot be blank')
 
         with open(target, 'wb') as target_file:
             try:
@@ -74,6 +77,14 @@ class Bitmap(object):
 
 
 if __name__ == "__main__":
-    my_bitmap = Bitmap.read_file('htrgtgr')
-    print(my_bitmap.source)
-    my_bitmap.write_file('test.bmp')
+    my_bitmap = Bitmap.read_file('bmp.bmp')
+
+    for i in range(65535):
+        shade = my_bitmap.pixel_array[i] + 100
+
+        if shade > 255:
+            shade = 255
+
+        my_bitmap.pixel_array[i] = shade
+
+    my_bitmap.write_file('test2.bmp')
