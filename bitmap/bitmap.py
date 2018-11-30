@@ -121,14 +121,15 @@ class Bitmap(object):
                 if color > 255:
                     color = 255
 
-                if color < 0:
-                    color = 0
+                if color <= 1:
+                    color = 1
 
                 self.color_table[i] = color
 
     def invert(self):
         """
-        Inverts the colors of the bitmap image
+        Inverts the bitmap image - this only does black/white.
+        It will turns the whites into blacks and vice versa.
 
         No input/output
         """
@@ -138,14 +139,39 @@ class Bitmap(object):
 
             self.pixel_array[i] = color
 
+    def the_cave(self):
+        """
+        Does a vignette-like filter
+
+        No input/output
+        """
+
+        for i in range(len(self.pixel_array)):
+            x = i % 256
+            y = i // 256
+
+            position = abs(128 - y) + abs(128 - x)
+
+            color = self.pixel_array[i] - int((position**2 * .006))
+
+            if color <= 1:
+                color = 2
+
+            if color >= 255:
+                color = 255
+
+            self.pixel_array[i] = color
+
+
 
 if __name__ == "__main__":
     my_bitmap = Bitmap.read_file('bmp.bmp')
 
     # print(my_bitmap.get_headers())
 
-    my_bitmap.lighten_darken('dark')
-    my_bitmap.tint_color('blue')
-    my_bitmap.invert()
+    # my_bitmap.lighten_darken('dark')
+    # my_bitmap.invert()
+    # my_bitmap.tint_color('red')
+    # my_bitmap.the_cave()
 
     my_bitmap.write_file('test2.bmp')
