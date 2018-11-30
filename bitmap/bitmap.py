@@ -21,15 +21,15 @@ class Bitmap(object):
         """
         # TOTEST: Complete this method for consuming a file from the file system
         # and creating a BMP instance (cls).
-        with open(origin, 'rb') as binary_data:
-            try:
+        try:
+            with open(origin, 'rb') as binary_data:
                 opened_data = binary_data.read()
                 new_binary = Bitmap(opened_data)
                 return new_binary
-            except FileNotFoundError:
-                raise FileNotFoundError('File not found!')
-            except IOError:
-                raise IOError('There was an issue reading the file')
+        except FileNotFoundError:
+            raise FileNotFoundError('File not found!')
+        except IOError:
+            raise IOError('There was an issue reading the file')
 
     def write_file(self, target):
         """Instance Method which accepts a target file path and writes the
