@@ -4,7 +4,8 @@ import struct
 class Bitmap(object):
     def __init__(self, file_data):
         """Initialization method for Bitmap instance.
-        Provides itemized data related to consumed Bitmap file through the use of a MemoryView object.
+        Provides itemized data related to consumed Bitmap file through the use
+        of a MemoryView object.
         """
         self.source = bytearray(file_data)
         self.memory_view = memoryview(self.source)
@@ -15,19 +16,35 @@ class Bitmap(object):
 
     @classmethod
     def read_file(cls, origin):
-        """Class Method which consumes a file path as input, and returns a Bitmap instance.
+        """Class Method which consumes a file path as input, and returns a
+        Bitmap instance.
         """
-        # TODO: Complete this method for consuming a file from the file system and creating a BMP instance (cls).
-        pass
+        # TODO: Complete this method for consuming a file from the file system
+        # and creating a BMP instance (cls).
+        with open(origin, 'rb') as binary_data:
+            try:
+                opened_data = binary_data.read()
+                new_binary = Bitmap(opened_data)
+                return new_binary
+            except IOError:
+                print('this doesnt work!')
 
     def write_file(self, target):
-        """Instance Method which accepts a target file path and writes the instance source data to target path.
+        """Instance Method which accepts a target file path and writes the
+        instance source data to target path.
         """
-        # TODO: Complete this method for writing a file from to the file system from the BMP instance (self).
-        pass
+        # TODO: Complete this method for writing a file from to the file
+        # system from the BMP instance (self).
+
+        with open(target, 'wb') as target_file:
+            try:
+                target_file.write(self.source)
+            except IOError:
+                print('something went wrong')
 
     def get_headers(self):
-        """Instance Method which provides instance source data as readable output to std out.
+        """Instance Method which provides instance source data as readable
+        output to std out.
         """
         import struct as s
         result = f'''
@@ -35,7 +52,7 @@ class Bitmap(object):
             Size: {s.unpack('I', self.memory_view[2:6].tobytes())[0]}
             Reserved 1: {s.unpack('H', self.memory_view[6:8].tobytes())[0]}
             Reserved 2: {s.unpack('H', self.memory_view[8:10].tobytes())[0]}
-            Offset: {s.unpack('I', self.memory_view[10:14].tobytes())[0]}            
+            Offset: {s.unpack('I', self.memory_view[10:14].tobytes())[0]}
             DIB Header Size: {s.unpack('I', self.memory_view[14:18].tobytes())[0]}
             Width: {s.unpack('I', self.memory_view[18:22].tobytes())[0]}
             Height: {s.unpack('I', self.memory_view[22:26].tobytes())[0]}
@@ -50,4 +67,11 @@ class Bitmap(object):
         '''
         return result
 
-    # TODO: Write your instance methods for transformations here as part of the Bitmap class.
+    # TODO: Write your instance methods for transformations here as part of the
+    #  Bitmap class.
+
+
+if __name__ == "__main__":
+    my_bitmap = Bitmap.read_file('htrgtgr')
+    print(my_bitmap.source)
+    my_bitmap.write_file('test.bmp')
