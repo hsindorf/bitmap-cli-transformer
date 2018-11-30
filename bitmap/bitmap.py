@@ -26,8 +26,10 @@ class Bitmap(object):
                 opened_data = binary_data.read()
                 new_binary = Bitmap(opened_data)
                 return new_binary
+            except FileNotFoundError:
+                raise FileNotFoundError('File not found!')
             except IOError:
-                print('this doesnt work!')
+                raise IOError('There was an issue reading the file')
 
     def write_file(self, target):
         """Instance Method which accepts a target file path and writes the
@@ -40,7 +42,7 @@ class Bitmap(object):
             try:
                 target_file.write(self.source)
             except IOError:
-                print('something went wrong')
+                print('There was an issue writing to the file')
 
     def get_headers(self):
         """Instance Method which provides instance source data as readable
