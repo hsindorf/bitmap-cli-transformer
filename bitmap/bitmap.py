@@ -78,7 +78,13 @@ class Bitmap(object):
     #  Bitmap class.
 
     def tint_color(self, input_color):
-        """Instance method that makes the bitmap photo turn red"""
+        """
+        Instance method that makes the bitmap photo turn red
+
+        input:
+            input_color: string matching color to turn photo
+        output: no return, saves modified photo to machine
+        """
         if input_color == 'red':
             input_color = 3
         if input_color == 'blue':
@@ -87,22 +93,48 @@ class Bitmap(object):
             input_color = 2
 
         for i in range(len(self.color_table)):
-            # print(self.color_table[i])
-            # color = binascii.hexlify(self.pixel_array[i].to_bytes(4, byteorder='big'))
-            if self.color_table[i] == 0 and i != len(self.color_table) - 1:
+            if self.color_table[i] == 0 and i < len(self.color_table) - input_color:
                 color = self.color_table[i + input_color] + 100
                 if color > 255:
                     color = 255
 
                 self.color_table[i + input_color] = color
 
-    def lighten(self):
-        """Instance method that lights the bitmap photo"""
-        for i in range(65535):
-            color = self.pixel_array[i] + 20
+    def lighten_darken(self, light_or_dark):
+        """
+        Lightens or darkens the bitmap image depending on keyword passed in
 
-            if color > 255:
-                color = 255
+        input:
+            light_or_dark: string, which to turn the photo
+        output: no return, saves modified photo to machine
+        """
+
+        if light_or_dark == 'light':
+            light_or_dark = 30
+        else:
+            light_or_dark = -30
+
+        for i in range(len(self.color_table)):
+            if self.color_table[i] != 0:
+                color = self.color_table[i] + light_or_dark
+
+                if color > 255:
+                    color = 255
+
+                if color < 0:
+                    color = 0
+
+                self.color_table[i] = color
+
+    def invert(self):
+        """
+        Inverts the colors of the bitmap image
+
+        No input/output
+        """
+
+        for i in range(len(self.pixel_array)):
+            color = abs(255 - self.pixel_array[i])
 
             self.pixel_array[i] = color
 
@@ -112,7 +144,8 @@ if __name__ == "__main__":
 
     # print(my_bitmap.get_headers())
 
-    my_bitmap.lighten()
-    my_bitmap.tint_color('green')
+    my_bitmap.lighten_darken('dark')
+    my_bitmap.tint_color('blue')
+    my_bitmap.invert()
 
     my_bitmap.write_file('test2.bmp')
