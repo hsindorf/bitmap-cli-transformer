@@ -21,24 +21,32 @@ class Bitmap(object):
         """Class Method which consumes a file path as input, and returns a
         Bitmap instance.
         """
-        # TOTEST: Complete this method for consuming a file from the file system
+        # Complete this method for consuming a file from the file system
         # and creating a BMP instance (cls).
-        try:
-            with open(origin, 'rb') as binary_data:
-                opened_data = binary_data.read()
-                new_binary = Bitmap(opened_data)
-                return new_binary
-        except FileNotFoundError:
-            raise FileNotFoundError('File not found!')
-        except IOError:
-            raise IOError('There was an issue reading the file')
+
+        if origin == '':
+            raise ValueError('filename cannot be blank')
+
+        else:
+            try:
+                with open(origin, 'rb') as binary_data:
+                    opened_data = binary_data.read()
+                    new_binary = Bitmap(opened_data)
+                    return new_binary
+            except FileNotFoundError:
+                raise FileNotFoundError('File not found!')
+            except IOError:
+                raise IOError('There was an issue reading the file')
 
     def write_file(self, target):
         """Instance Method which accepts a target file path and writes the
         instance source data to target path.
         """
-        # TOTEST: Complete this method for writing a file from to the file
+        # Complete this method for writing a file from to the file
         # system from the BMP instance (self).
+
+        if type(target) is not str:
+            raise TypeError('Target filename must be a string')
 
         if target == '':
             raise ValueError('Target filename cannot be blank')
@@ -74,7 +82,7 @@ class Bitmap(object):
         '''
         return result
 
-    # TODO: Write your instance methods for transformations here as part of the
+    #  Write your instance methods for transformations here as part of the
     #  Bitmap class.
 
     def tint_color(self, input_color):
@@ -167,11 +175,9 @@ class Bitmap(object):
 if __name__ == "__main__":
     my_bitmap = Bitmap.read_file('bmp.bmp')
 
-    # print(my_bitmap.get_headers())
-
-    # my_bitmap.lighten_darken('dark')
-    # my_bitmap.invert()
-    # my_bitmap.tint_color('red')
-    # my_bitmap.the_cave()
+    my_bitmap.lighten_darken('dark')
+    my_bitmap.invert()
+    my_bitmap.tint_color('red')
+    my_bitmap.the_cave()
 
     my_bitmap.write_file('test2.bmp')
