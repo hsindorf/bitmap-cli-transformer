@@ -17,7 +17,10 @@ class BitmapManipulator(cmd.Cmd):
 
         Returns a line-item response of the file's header data.
         """
-
+        splitted = source.split()
+        if len(splitted) > 1:
+            print('invalid number of arguments')
+            return
         if source == '':
             print('no file specified')
             return
