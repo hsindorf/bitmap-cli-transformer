@@ -1,5 +1,6 @@
 import cmd
 import sys
+import bitmap
 
 
 class BitmapManipulator(cmd.Cmd):
@@ -16,7 +17,9 @@ class BitmapManipulator(cmd.Cmd):
         Returns a line-item response of the file's header data.
         """
         # TODO: Complete these CLI methods for performing described actions
-        pass
+        to_read = bitmap.Bitmap.read_file(source)
+        print(to_read.get_headers())
+
 
     def do_transform(self, arg):
         """
@@ -29,7 +32,26 @@ class BitmapManipulator(cmd.Cmd):
         Creates a new file at 'new' location with the provided 'transform' applied to the new file.
         """
         # TODO: Complete these CLI methods for performing described actions
-        pass
+        splitted = arg.split()
+
+        to_read = bitmap.Bitmap.read_file(splitted[0])
+        if splitted[2] == 'tint_red':
+            to_read.tint_color('red')
+        if splitted[2] == 'tint_blue':
+            to_read.tint_color('blue')
+        if splitted[2] == 'tint_green':
+            to_read.tint_color('green')
+        if splitted[2] == 'lighten':
+            to_read.lighten_darken('light')
+        if splitted[2] == 'darken':
+            to_read.lighten_darken('dark')
+        if splitted[2] == 'invert':
+            to_read.invert()
+        if splitted[2] == 'cave':
+            to_read.the_cave()
+
+        to_read.write_file(splitted[1])
+
 
     @staticmethod
     def do_exit(args):
