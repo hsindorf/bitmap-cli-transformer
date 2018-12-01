@@ -41,20 +41,6 @@ def test_write_file_blank_filename(input_image):
         input_image.write_file('')
 
 
-# def test_write_file_value_error(input_image):
-#     """Tests for well-formed--but invalid--argument(s)."""
-#     Bitmap.write_file(input_image)
-#     with pytest.raises(ValueError):
-#         assert Bitmap.write_file(source, actual)
-
-
-# def test_write_file_attribute_error():
-#     """Tests for invalid attribute(s) in input."""
-#     actual = source
-#     with pytest.raises(AttributeError):
-#         assert Bitmap.write_file(source, actual)
-
-
 # tint color method
 
 
